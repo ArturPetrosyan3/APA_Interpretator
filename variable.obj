@@ -1,0 +1,65 @@
+//  The BiteCode Code 
+r1=00000000000000000000000000000000 //input r1
+ //mov r1 5
+ //add r7 r1
+ //clr r7
+ //li 20
+ //slt r5 r0
+ //li 37
+ //bez r0
+ //clr r2
+ //add r2 r1
+ //lw (r2)
+ //inc r7
+ //clr r3
+ //add r3 r7
+ //lw (r3)
+ //clr r0
+ //add r0 r2
+ //slt r2 r3
+ //li 6
+ //bez r0
+ //slt r3 r2
+ //li 3
+ //bez r0
+ //li 25
+ //branch r0
+ //sub r2 r3
+ //li 7
+ //bez r0
+ //twcmp r2
+ //sltu r2
+ //li 9
+ //bez r0
+ //clr r6
+ //add r6 r2
+ //abs r2
+ //sltu r2
+ //li 3
+ //bez r0
+ //clr r6
+ //add r6 r2
+ //inc r5
+ //li 39
+ //twcmp r0
+ //branch r0
+ //inc r4 
+ //inc r1
+ //clr r5 
+ //add r5 r4 
+ //inc r5 
+ //li 53
+ //twcmp r0
+ //branch r0
+ //clr r6
+ //li 63
+ //inc r0 
+ //sll r0
+ //clr r7
+ //add r7 r0
+ //li 1
+ //sub r7 r0
+ //clr r0
+ //add r0 r7
+ //sw r6
+ //halt
