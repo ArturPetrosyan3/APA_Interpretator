@@ -31,3 +31,5 @@ HEADERS  += compliermainwidget.h \
     parser.h
 
 FORMS    += compliermainwidget.ui
+
+

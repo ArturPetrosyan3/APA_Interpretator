@@ -12,7 +12,8 @@
 #include <QRegExp>
 #include <QMap>
 #include <QMapIterator>
-
+#include <QFileDialog>
+#include <QStack>
 
 #include <exception>
 #include <sstream>
@@ -34,6 +35,12 @@ public:
     ~ComplierMainWidget();
 public:
     QString TokenizeString( QQueue<QString> &Tokens, QString LineToParse);
+    void LoadInputFileIntoTextEditor(QString FilePath);
+private slots:
+    void on_OpenFileDialog_clicked();
+    void on_ButtonRun_clicked();
+    void on_pushButton_clicked();
+
 private:
     Ui::ComplierMainWidget *ui;
 
@@ -42,6 +49,8 @@ private:
     QQueue<QString> Tokens;
     QString Commands;
     QMap <QString,QString>BiteCode;
+    QString PathToInput;
+    QStack <QString> VariableStack;
 };
 
 #endif // COMPLIERMAINWIDGET_H

@@ -6,8 +6,66 @@ ComplierMainWidget::ComplierMainWidget(QWidget *parent) :
     ui(new Ui::ComplierMainWidget)
 {
     ui->setupUi(this);
-    QString PathToInput = QDir::currentPath();
-    PathToInput.append("/Source.apa");
+    //QString PathToInput = QDir::currentPath();
+    //PathToInput.append("/Source.apa");
+
+
+}
+
+QString ComplierMainWidget::TokenizeString( QQueue<QString> &Tokens, QString LineToParse) {
+    LineToParse.remove(QRegExp("[\t]"));
+    LineToParse.remove(QRegExp("[,]"));
+    LineToParse.remove(QRegExp("[$]"));
+    QChar CommentCharacter = '#';
+    int CommentIndex = LineToParse.indexOf('#');
+    if (CommentIndex != -1) {
+        LineToParse.remove(CommentIndex,LineToParse.size());
+    }
+    QStringList list = LineToParse.split(QRegExp("\\s+"), QString::SkipEmptyParts);
+    foreach (QString item, list) {
+        Tokens.push_back(item);
+    }
+    return LineToParse;
+}
+
+ComplierMainWidget::~ComplierMainWidget()
+{
+    delete ui;
+}
+
+void ComplierMainWidget::on_OpenFileDialog_clicked()
+{
+    QString filter = "File Description (*.apa)";
+    PathToInput = QFileDialog::getOpenFileName(this, "Select a file...", QDir::currentPath(), filter);
+    QFile file(PathToInput);
+    QFileInfo fileInfo(file.fileName());
+    QString FileNameToList(fileInfo.fileName());
+    QListWidgetItem *itm = new QListWidgetItem;
+    itm->setText(FileNameToList);
+    ui->FilesList->addItem(itm);
+    LoadInputFileIntoTextEditor(PathToInput);
+}
+
+void ComplierMainWidget::LoadInputFileIntoTextEditor(QString FilePath) {
+    QFile file(FilePath);
+    if(!file.exists()){
+        qDebug() << "The file doesn't exest "<<FilePath;
+    }
+    QString line;
+    ui->textEdit->clear();
+    if (file.open(QIODevice::ReadOnly | QIODevice::Text)){
+        QTextStream stream(&file);
+        while (!stream.atEnd()){
+            line = stream.readLine();
+            ui->textEdit->setText(ui->textEdit->toPlainText()+line+"\n");
+        }
+    }
+    file.close();
+}
+
+void ComplierMainWidget::on_ButtonRun_clicked()
+{
+
     qDebug() << PathToInput;
     QString PathToOutput = QDir::currentPath();
     PathToOutput.append("/variable.obj");
@@ -64,26 +122,16 @@ ComplierMainWidget::ComplierMainWidget(QWidget *parent) :
             break;
         }
     }
-
 }
 
-QString ComplierMainWidget::TokenizeString( QQueue<QString> &Tokens, QString LineToParse) {
-    LineToParse.remove(QRegExp("[\t]"));
-    LineToParse.remove(QRegExp("[,]"));
-    LineToParse.remove(QRegExp("[$]"));
-    QChar CommentCharacter = '#';
-    int CommentIndex = LineToParse.indexOf('#');
-    if (CommentIndex != -1) {
-        LineToParse.remove(CommentIndex,LineToParse.size());
-    }
-    QStringList list = LineToParse.split(QRegExp("\\s+"), QString::SkipEmptyParts);
-    foreach (QString item, list) {
-        Tokens.push_back(item);
-    }
-    return LineToParse;
-}
-
-ComplierMainWidget::~ComplierMainWidget()
+void ComplierMainWidget::on_pushButton_clicked()
 {
-    delete ui;
+    QFile file(PathToInput);
+    if (file.open(QIODevice::ReadWrite)) {
+        QTextStream stream(&file);
+        stream << ui->textEdit->toPlainText();
+        file.flush();
+        file.close();
+    }
+    LoadInputFileIntoTextEditor(PathToInput);
 }

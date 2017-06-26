@@ -14,7 +14,7 @@ class Parser
 public:
     Parser();
     // Commands
-    enum {MOV, ADD, CLR, INPUT};
+    enum {MOV, ADD, CLR, VAR};
 
     QMap<QString,QString> ParseToken(QQueue<QString> &Token);
     QString GetBinFormatInt(const int Width, int Num);

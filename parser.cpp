@@ -14,7 +14,7 @@ int Parser::GetCommandEnum(QString CommandName) {
         return 1;
     else if (CommandName == "clr")
         return 2;
-    else if (CommandName == "input")
+    else if (CommandName == "var")
         return 3;
     else
         return -1;
@@ -41,7 +41,7 @@ QMap<QString, QString> Parser::ParseToken(QQueue<QString> &Token) {
             break;
         case CLR:
             break;
-        case INPUT:
+        case VAR:
              Token.pop_front();
              InputVariable = Token.front();
              VariableMap.insert(InputVariable,GetBinFormatInt(32,0));
@@ -58,7 +58,6 @@ QString Parser::QBitArray2QString( QBitArray& array )
 {
     QByteArray bytes;
         bytes.resize(array.size()/8);
-
         for(int b = 0; b < array.count(); ++b)
             bytes[b/8] = (bytes.at(std::floor(b/8)) | ((array[b]?1:0)<<(b%8)));
         QString aa= bytes;
